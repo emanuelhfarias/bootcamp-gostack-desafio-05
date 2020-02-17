@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import api from '../../services/api';
 
@@ -51,6 +52,7 @@ export default class Repository extends Component {
     return (
       <Container>
         <Owner>
+          <Link to="/">Voltar aos repositórios</Link>
           <img
             src={repository.owner.avatar_url}
             alt={repository.owner.login}
