@@ -12,6 +12,7 @@ export default class Main extends Component {
     newRepo: '',
     repositories: [],
     loading: false,
+    invalidRepository: false,
   };
 
   // carrega dados do localStorage
@@ -38,20 +39,28 @@ export default class Main extends Component {
     e.preventDefault();
     this.setState({ loading: true });
     const { newRepo } = this.state;
-    const response = await api.get(`/repos/${newRepo}`);
-    const data = {
-      name: response.data.full_name,
-    };
 
-    this.setState({
-      repositories: [...this.state.repositories, data],
-      newRepo: '',
-      loading: false,
-    });
+    try {
+      const response = await api.get(`/repos/${newRepo}`);
+      const data = {
+        name: response.data.full_name,
+      };
+
+      this.setState({
+        repositories: [...this.state.repositories, data],
+        newRepo: '',
+        loading: false,
+        invalidRepository: false,
+      });
+    } catch (error) {
+      this.setState({ loading: false, invalidRepository: true });
+    }
+
   };
 
   render() {
-    const { newRepo, repositories, loading } = this.state;
+    const { newRepo, repositories, loading, invalidRepository } = this.state;
+
     return (
       <Container>
         <h1>
@@ -64,6 +73,7 @@ export default class Main extends Component {
             placeholder="Adicionar repositório"
             value={newRepo}
             onChange={this.handleInputChange}
+            color={invalidRepository ? 'red' : '#eee'}
           />
 
           <SubmitButton loading={loading.toString()}>
