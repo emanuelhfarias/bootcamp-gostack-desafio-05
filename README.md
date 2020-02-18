@@ -4,7 +4,7 @@
 
 
 <h3 align="center">
-  :rocket: [Bootcamp GoStack#10] Desafio 05:
+  :rocket: [Bootcamp GoStack#10] Desafio 05
 </h3>
 
 ## Desafio
