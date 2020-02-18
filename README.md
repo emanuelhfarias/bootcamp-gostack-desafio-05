@@ -11,7 +11,7 @@
 Desenvolver uma aplicação em React que permite cadastrar e consultar repositórios do Github.
 A aplicação deverá consumir a API oficial do Github para buscar repositórios e suas Issues.
 
-[Link do Desafio](https://github.com/Rocketseat/bootcamp-gostack-desafio-05)
+[Link do Desafio](https://github.com/Rocketseat/bootcamp-gostack-desafio-05/blob/665fe9f7a0ac68acf87972f7c45c3a0ece12ebdd/README.md)
 
 ### Resultado
 <h1 align="center">
