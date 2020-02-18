@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import api from '../../services/api';
 
 import Container from '../../components/Container';
-import { Loading, Owner, IssueList } from './styles';
+import { Loading, Owner, IssueList, Filter } from './styles';
 
 export default class Repository extends Component {
   static propTypes = {
@@ -19,6 +19,7 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
+    issue_state_filter: 'open',
   }
 
   async componentDidMount() {
@@ -29,7 +30,7 @@ export default class Repository extends Component {
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: 'open',
+          state: this.state.issue_state_filter,
           per_page: 5,
         }
       })
@@ -40,6 +41,29 @@ export default class Repository extends Component {
       issues: issues.data,
       loading: false,
     });
+  }
+
+  async getIssues() {
+    const { match } = this.props;
+    const repoName = decodeURIComponent(match.params.repository);
+
+    const issues = await api.get(`/repos/${repoName}/issues`, {
+      params: {
+        state: this.state.issue_state_filter,
+        per_page: 5,
+      }
+    })
+
+    this.setState({ issues: issues.data });
+  }
+
+  changeFilter = e => {
+    this.setState({ issue_state_filter: e.target.textContent.toLowerCase() });
+    this.getIssues();
+  }
+
+  changeActive(option) {
+    return this.state.issue_state_filter == option ? 'active': '';
   }
 
   render() {
@@ -60,6 +84,12 @@ export default class Repository extends Component {
           <h1>{repository.name}</h1>
           <p>{repository.description}</p>
         </Owner>
+
+        <Filter>
+          <li className={this.changeActive('all')} onClick={this.changeFilter}>All</li>
+          <li className={this.changeActive('open')} onClick={this.changeFilter}>Open</li>
+          <li className={this.changeActive('closed')} onClick={this.changeFilter}>Closed</li>
+        </Filter>
 
         <IssueList>
           {issues.map(issue => (
