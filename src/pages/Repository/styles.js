@@ -103,7 +103,6 @@ export const IssueList = styled.ul`
 `;
 
 export const Filter = styled.ul`
-
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -120,6 +119,37 @@ export const Filter = styled.ul`
 
     &.active {
       border: 2px solid #7159c1;
+    }
+  }
+`;
+
+export const Pagination = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 40px;
+
+  button {
+    width: 100px;
+    margin-left: 25px;
+    text-align: center;
+    padding: 3px 15px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    color: #7159c1;
+
+    &:hover {
+      background: #7159c1;
+      color: #FFF;
+      border: 1px solid #FFF;
+    }
+
+    &:active {
+      background: #4c1fe3;
+    }
+
+    &[disabled] {
+      background: #d0d0d0;
     }
   }
 `;

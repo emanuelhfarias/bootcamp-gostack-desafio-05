@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import api from '../../services/api';
 
 import Container from '../../components/Container';
-import { Loading, Owner, IssueList, Filter } from './styles';
+import { Loading, Owner, IssueList, Filter, Pagination } from './styles';
 
 export default class Repository extends Component {
   static propTypes = {
@@ -20,6 +20,7 @@ export default class Repository extends Component {
     issues: [],
     loading: true,
     issue_state_filter: 'open',
+    issue_page: 1,
   }
 
   async componentDidMount() {
@@ -31,7 +32,8 @@ export default class Repository extends Component {
       api.get(`/repos/${repoName}/issues`, {
         params: {
           state: this.state.issue_state_filter,
-          per_page: 5,
+          page: this.state.issue_page,
+          per_page: 3,
         }
       })
     ]);
@@ -50,7 +52,8 @@ export default class Repository extends Component {
     const issues = await api.get(`/repos/${repoName}/issues`, {
       params: {
         state: this.state.issue_state_filter,
-        per_page: 5,
+        page: this.state.issue_page,
+        per_page: 3,
       }
     })
 
@@ -64,6 +67,15 @@ export default class Repository extends Component {
 
   changeActive(option) {
     return this.state.issue_state_filter == option ? 'active': '';
+  }
+
+  changePage(button) {
+    if (button == 'proxima') {
+      this.setState({ issue_page: this.state.issue_page + 1 });
+    } else {
+      this.setState({ issue_page: this.state.issue_page - 1 });
+    }
+    this.getIssues();
   }
 
   render() {
@@ -109,6 +121,12 @@ export default class Repository extends Component {
             </li>
           ))}
         </IssueList>
+
+        <Pagination>
+          <button disabled={this.state.issue_page == 1} onClick={() => this.changePage('anterior')}>Anterior</button>
+          <button onClick={() => this.changePage('proxima')}>Proxima</button>
+        </Pagination>
+
       </Container>
     );
   }
